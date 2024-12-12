@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   annotations:
      argocd.argoproj.io/hook: PreSync
-     argocd.argoproj.io/hook-delete-policy: HookSucceeded
+     argocd.argoproj.io/hook-delete-policy: HookSucceeded, HookFailed
 spec:
   backoffLimit: 2
   template:
@@ -24,7 +24,7 @@ spec:
         image: line/kubectl-kustomize
         command: ["sh","-c"]
         args:
-        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 0
+        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 1
         volumeMounts:
         - name: repo-volume
           mountPath: /repo
