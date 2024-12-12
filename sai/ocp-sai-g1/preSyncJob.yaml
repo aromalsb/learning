@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: argo-pre-sync
+  namespace: argocd
+  annotations:
+     argocd.argoproj.io/hook: PreSync
+     argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: git-clone
+        image: alpine/git
+        command: ["sh", "-c"]
+        args:
+        - git clone https://github.com/aromalsb/learning.git /repo && cd /repo/sai/ocp-sai-g1
+        volumeMounts:
+        - name: repo-volume
+          mountPath: /repo
+      containers:
+      - name: kustomize-build
+        image: line/kubectl-kustomize
+        command: ["sh","-c"]
+        args:
+        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 0
+        volumeMounts:
+        - name: repo-volume
+          mountPath: /repo
+      volumes:
+      - name: repo-volume
+        emptyDir: {}
+      restartPolicy: Never
