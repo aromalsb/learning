@@ -23,7 +23,7 @@ spec:
         image: line/kubectl-kustomize
         command: ["sh","-c"]
         args:
-        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 0
+        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 1
         volumeMounts:
         - name: repo-volume
           mountPath: /repo
