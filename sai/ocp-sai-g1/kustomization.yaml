@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
 - crz0
+- preSyncJob.yaml
