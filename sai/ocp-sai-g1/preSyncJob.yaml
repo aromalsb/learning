@@ -7,7 +7,7 @@ metadata:
      argocd.argoproj.io/hook: PreSync
      argocd.argoproj.io/hook-delete-policy: HookSucceeded, HookFailed
 spec:
-  backoffLimit: 2
+  backoffLimit: 1
   template:
     spec:
       initContainers:
@@ -23,8 +23,12 @@ spec:
       - name: kustomize-build
         image: line/kubectl-kustomize
         command: ["sh","-c"]
-        args:
-        - cd /repo/sai/ocp-dev-g1 && kustomize build . || exit 0
+          # If the previous command fails (non-zero exit code), this triggers the block of commands in {}.
+          # { echo ...; exit 1; }:
+
+          # Outputs a custom error message to the console using echo.
+          # Exits with a status of 1 to indicate failure.
+        args: ["kustomize build /repo/sai/ocp-dev-g1 || { echo 'Error: kustomize build failed. Please check your configuration.'; exit 1; }"]
         volumeMounts:
         - name: repo-volume
           mountPath: /repo
