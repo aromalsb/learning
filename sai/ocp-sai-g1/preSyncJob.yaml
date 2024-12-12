@@ -28,7 +28,9 @@ spec:
 
           # Outputs a custom error message to the console using echo.
           # Exits with a status of 1 to indicate failure.
-        args: ["kustomize build /repo/sai/ocp-dev-g1 || { echo 'Error: kustomize build failed. Please check your configuration.'; exit 1; }"]
+        args: ["kustomize build /repo/sai/ocp-sai-g1 || { echo 'Error: kustomize build failed. Please check your configuration.'; exit 1; }"]
+        # command: ["sleep"]
+        # args: ["infinity"]
         volumeMounts:
         - name: repo-volume
           mountPath: /repo
