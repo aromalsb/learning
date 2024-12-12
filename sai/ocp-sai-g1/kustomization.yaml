@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
 - crz0
-- abc
